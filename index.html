@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IA Maipú Assistant</title>
+    <style>
+        :root {
+            --bg-light: #f4f4f4;
+            --bg-dark: #121212;
+            --text-light: #000;
+            --text-dark: #fff;
+            --bubble-light: #fff;
+            --bubble-dark: #333;
+            --user-bubble-light: #ffb3b3;
+            --user-bubble-dark: #bb3333;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .dark-mode {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .chat-box {
+            border-radius: 10px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .bubble {
+            padding: 12px;
+            border-radius: 10px;
+            max-width: 80%;
+            white-space: pre-line;
+        }
+
+        .user {
+            align-self: flex-end;
+            background-color: var(--user-bubble-light);
+        }
+
+        .assistant {
+            align-self: flex-start;
+            background-color: var(--bubble-light);
+        }
+
+        .dark-mode .user {
+            background-color: var(--user-bubble-dark);
+        }
+
+        .dark-mode .assistant {
+            background-color: var(--bubble-dark);
+        }
+
+        .input-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        input {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 8px 12px;
+            cursor: pointer;
+            border: none;
+            background: #007bff;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .dark-mode button {
+            background: #0056b3;
+        }
+
+        .toggle-mode {
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>¡Bienvenido al Asistente Virtual de Maipú!</h1>
+        <div class="toggle-mode">
+            <button onclick="toggleDarkMode()">Modo Nocturno</button>
+        </div>
+        <div class="chat-box" id="chatBox">
+            <div class="bubble user">hola</div>
+            <div class="bubble assistant">¡Hola! ¿En qué puedo ayudarte hoy?</div>
+            <div class="bubble user">que sabes de maipu</div>
+            <div class="bubble assistant">Maipú es un nombre que puede referirse a varias entidades geográficas, principalmente en Argentina y Chile.  
+            
+1. **Maipú, Provincia de Buenos Aires, Argentina**  
+   - **Partido de Maipú**: Es uno de los 135 partidos de la provincia de Buenos Aires.  
+   - **Ciudad de Maipú**: Es la ciudad cabecera del partido homónimo.  
+   - **Ubicación**: Se encuentra en el centro-este de la provincia.  
+   - **Economía**: Se basa en la agricultura y ganadería.  
+   - **Historia**: Fundada en 1878, su nombre recuerda la Batalla de Maipú.  
+   - **Turismo**: Cuenta con diversos atractivos históricos.  
+            </div>
+        </div>
+        <div class="input-container">
+            <input type="text" id="userInput" placeholder="Escribe tu mensaje...">
+            <button onclick="sendMessage()">Enviar</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-mode");
+        }
+
+        function sendMessage() {
+            let userInput = document.getElementById("userInput").value;
+            if (userInput.trim() === "") return;
+
+            let chatBox = document.getElementById("chatBox");
+
+            let userBubble = document.createElement("div");
+            userBubble.classList.add("bubble", "user");
+            userBubble.textContent = userInput;
+            chatBox.appendChild(userBubble);
+
+            let assistantBubble = document.createElement("div");
+            assistantBubble.classList.add("bubble", "assistant");
+            assistantBubble.innerHTML = formatText(getAssistantResponse(userInput));
+            chatBox.appendChild(assistantBubble);
+
+            document.getElementById("userInput").value = "";
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function formatText(text) {
+            return text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+        }
+
+        function getAssistantResponse(input) {
+            let responses = {
+                "hola": "¡Hola! ¿En qué puedo ayudarte hoy?",
+                "que sabes de maipu": `Maipú es un nombre que puede referirse a varias entidades geográficas, principalmente en Argentina y Chile.  
+                
+1. **Maipú, Provincia de Buenos Aires, Argentina**  
+   - **Partido de Maipú**: Es uno de los 135 partidos de la provincia de Buenos Aires.  
+   - **Ciudad de Maipú**: Es la ciudad cabecera del partido homónimo.  
+   - **Ubicación**: Se encuentra en el centro-este de la provincia.  
+   - **Economía**: Se basa en la agricultura y ganadería.  
+   - **Historia**: Fundada en 1878, su nombre recuerda la Batalla de Maipú.  
+   - **Turismo**: Cuenta con diversos atractivos históricos.  `
+            };
+
+            return responses[input.toLowerCase()] || "Lo siento, no tengo información sobre eso.";
+        }
+    </script>
+</body>
+</html>
