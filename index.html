@@ -319,7 +319,9 @@
 
         // Función para formatear el texto de las respuestas
         function formatResponseText(text) {
-            return text
+            // Elimina los asteriscos dobles (**) del texto antes de formatear
+            const textWithoutAsterisks = text.replace(/\*\*/g, '');
+            return textWithoutAsterisks
                 .split('\n')
                 .map(paragraph => `<p>${paragraph.trim()}</p>`)
                 .join('');
